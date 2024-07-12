@@ -16,7 +16,9 @@ xcaddy build --with github.com/mohammed90/caddy-git-fs
 
 ```caddyfile
 {
-	filesystem nginx-repo git "https://github.com/caddyserver/nginx-adapter"
+	filesystem nginx-repo git https://github.com/caddyserver/nginx-adapter {
+		refresh_period 10s # optional, no refresh when omitted
+	}
 }
 example.com {
 	file_server {

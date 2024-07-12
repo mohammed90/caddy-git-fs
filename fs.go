@@ -15,4 +15,7 @@ func (s statFs) Stat(name string) (fs.FileInfo, error) {
 	return f.Stat()
 }
 
-var _ fs.StatFS = statFs{}
+var (
+	_ fs.StatFS = statFs{}
+	_ fs.FS     = statFs{}
+)
