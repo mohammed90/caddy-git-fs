@@ -9,10 +9,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/caddyserver/caddy/v2"
-	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 	"go.uber.org/zap"
 	"rsc.io/gitfs"
+
+	"github.com/caddyserver/caddy/v2"
+	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 )
 
 func init() {
@@ -101,6 +102,19 @@ func (r *Repo) Stat(name string) (fs.FileInfo, error) {
 		return nil, err
 	}
 	return f.Stat()
+}
+
+func (r *Repo) pull() error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.logger.Info("pulling gitfs repo")
+	h, fs, err := r.repo.Clone(r.Ref)
+	if err != nil {
+		return err
+	}
+	r.hash = h
+	r.statFs = statFs{fs}
+	return nil
 }
 
 func (r *Repo) refresh() {
