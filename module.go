@@ -57,6 +57,7 @@ func (Repo) CaddyModule() caddy.ModuleInfo {
 
 // Provision implements caddy.Provisioner.
 func (r *Repo) Provision(ctx caddy.Context) (err error) {
+	r.ctx, r.cancel = context.WithCancel(ctx)
 	r.logger = ctx.Logger()
 	if r.URL == "" {
 		return fmt.Errorf("'url' is empty")
@@ -83,7 +84,6 @@ func (r *Repo) Provision(ctx caddy.Context) (err error) {
 		)
 		go r.refresh()
 	}
-	r.ctx, r.cancel = context.WithCancel(ctx)
 	return nil
 }
 
