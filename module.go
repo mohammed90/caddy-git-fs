@@ -139,7 +139,7 @@ func (r *Repo) refresh() {
 			r.mu.Lock()
 			r.hash = hash
 			r.statFs = statFs{f}
-			defer r.mu.Unlock()
+			r.mu.Unlock()
 		}
 	}
 }
